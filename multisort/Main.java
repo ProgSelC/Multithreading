@@ -14,8 +14,6 @@ public class Main {
 			myArr[i] = (rnd.nextInt(10) + 1);
 		}
 
-		int[] myArr1 = Arrays.copyOf(myArr, myArr.length);
-
 		int pLength = myArr.length / THREADS;
 		int begin = 0;
 
@@ -27,7 +25,7 @@ public class Main {
 		long rTime = System.currentTimeMillis();
 
 		for (int i = 0; i < THREADS; i++) {
-			pLength = (pLength < myArr.length) ? pLength : myArr.length;
+			pLength = ((begin+pLength) < myArr.length) ? pLength : (myArr.length - begin);
 			pSort[i] = Arrays.copyOfRange(myArr, begin, begin + pLength);
 			
 			thr[i] = new Thread(new SortArray(pSort[i]));
@@ -53,11 +51,11 @@ public class Main {
 
 		rTime = System.currentTimeMillis();
 
-		Arrays.sort(myArr1);
+		Arrays.sort(myArr);
 		rTime = System.currentTimeMillis() - rTime;
 
 		System.out.printf("Sorting time with Arrays.sort: %dms\n", rTime);
 
-		System.out.println("Arrays are equal: " + Arrays.equals(thrSortedArr, myArr1));
+		System.out.println("Arrays are equal: " + Arrays.equals(thrSortedArr, myArr));
 	}
 }
